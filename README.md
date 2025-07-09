@@ -152,6 +152,9 @@ cd ../backend
 pip install -r requirements.txt
 poetry install --with dev,test
 
+# Set up pre-commit hooks
+pre-commit install
+
 # Run database migrations
 alembic upgrade head
 
@@ -789,7 +792,7 @@ def decrypt_sensitive_data(encrypted_data: str) -> str:
 server {
     listen 443 ssl http2;
     server_name prompthub.example.com;
-    
+
     ssl_certificate /path/to/certificate.crt;
     ssl_certificate_key /path/to/private.key;
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -854,17 +857,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Run Snyk
       uses: snyk/actions/python@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    
+
     - name: Run Bandit
       run: |
         pip install bandit
         bandit -r . -f json -o bandit-report.json
-    
+
     - name: Run Safety
       run: |
         pip install safety
@@ -1041,7 +1044,7 @@ Any other context or screenshots
 ```sql
 -- Example optimized query with proper indexing
 EXPLAIN ANALYZE
-SELECT p.*, u.full_name as author_name, 
+SELECT p.*, u.full_name as author_name,
        COUNT(v.id) as version_count
 FROM prompts p
 JOIN users u ON p.author_id = u.id
@@ -1054,8 +1057,8 @@ ORDER BY p.updated_at DESC
 LIMIT 20 OFFSET $2;
 
 -- Required indexes
-CREATE INDEX CONCURRENTLY idx_prompts_org_status_updated 
-ON prompts(organization_id, status, updated_at DESC) 
+CREATE INDEX CONCURRENTLY idx_prompts_org_status_updated
+ON prompts(organization_id, status, updated_at DESC)
 WHERE deleted_at IS NULL;
 ```
 
@@ -1161,8 +1164,8 @@ module.exports = {
 pg_isready -h localhost -p 5432
 
 # Check connection pool status
-SELECT count(*) as active_connections 
-FROM pg_stat_activity 
+SELECT count(*) as active_connections
+FROM pg_stat_activity
 WHERE state = 'active';
 
 # Reset connection pool
@@ -1192,9 +1195,9 @@ nethogs
 curl -w "@curl-format.txt" -o /dev/null -s "http://localhost:8000/api/v1/prompts"
 
 # Monitor database performance
-SELECT query, mean_time, calls, total_time 
-FROM pg_stat_statements 
-ORDER BY mean_time DESC 
+SELECT query, mean_time, calls, total_time
+FROM pg_stat_statements
+ORDER BY mean_time DESC
 LIMIT 10;
 ```
 
@@ -1204,7 +1207,7 @@ LIMIT 10;
 async def check_provider_health():
     providers = ["openai", "anthropic", "azure"]
     results = {}
-    
+
     for provider in providers:
         try:
             start_time = time.time()
@@ -1220,7 +1223,7 @@ async def check_provider_health():
                 "status": "unhealthy",
                 "error": str(e)
             }
-    
+
     return results
 ```
 
@@ -1275,7 +1278,7 @@ SELECT pg_reload_conf();
 -- Monitor slow queries
 SELECT query, mean_time, calls, total_time,
        100.0 * shared_blks_hit / nullif(shared_blks_hit + shared_blks_read, 0) AS hit_percent
-FROM pg_stat_statements 
+FROM pg_stat_statements
 WHERE mean_time > 100
 ORDER BY mean_time DESC;
 
@@ -1323,9 +1326,9 @@ async def health_check():
         "disk_space": check_disk_space(),
         "memory_usage": check_memory_usage()
     }
-    
+
     all_healthy = all(check["status"] == "healthy" for check in checks.values())
-    
+
     return {
         "status": "healthy" if all_healthy else "unhealthy",
         "timestamp": datetime.utcnow().isoformat(),
@@ -1509,16 +1512,16 @@ metadata:
   name: prompthub-postgres
 spec:
   instances: 3
-  
+
   postgresql:
     parameters:
       max_connections: "200"
       shared_buffers: "256MB"
       effective_cache_size: "1GB"
-      
+
   monitoring:
     enabled: true
-    
+
   backup:
     retentionPolicy: "30d"
     barmanObjectStore:
@@ -1569,14 +1572,14 @@ upstream prompthub_websocket {
 server {
     listen 80;
     server_name prompthub.example.com;
-    
+
     location /api/ {
         proxy_pass http://prompthub_backend;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-    
+
     location /ws/ {
         proxy_pass http://prompthub_websocket;
         proxy_http_version 1.1;
@@ -1604,10 +1607,10 @@ async def get_prompt_with_cache(prompt_id: str) -> dict:
     cached = await redis.get(f"prompt:{prompt_id}")
     if cached:
         return json.loads(cached)
-    
+
     # Fetch from database
     prompt = await db.fetch_prompt(prompt_id)
-    
+
     # Cache for future requests
     await redis.setex(f"prompt:{prompt_id}", 300, json.dumps(prompt))
     return prompt
@@ -1661,13 +1664,13 @@ limiter = Limiter(key_func=get_user_id)
 @app.post("/api/v1/execute")
 async def execute_prompt(request: Request, current_user: User = Depends(get_current_user)):
     user_tier = current_user.subscription_tier
-    
+
     limits = {
         "free": "10/hour",
-        "pro": "1000/hour", 
+        "pro": "1000/hour",
         "enterprise": "10000/hour"
     }
-    
+
     await limiter.limit(limits.get(user_tier, "10/hour"))(request)
     # ... rest of endpoint logic
 ```
@@ -1808,7 +1811,7 @@ redis-cli FLUSHDB         # Clear Redis cache
 
 ---
 
-**Ready to transform your prompt engineering workflow?** 
+**Ready to transform your prompt engineering workflow?**
 
 Start with our [Quick Start Guide](#quick-start) or join our [Community](#support-and-community) to connect with other PromptHub users and contributors.
 
