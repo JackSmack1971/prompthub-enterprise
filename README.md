@@ -1,6 +1,7 @@
 # PromptHub Enterprise Platform
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Features](#features)
 - [Architecture](#architecture)
@@ -18,12 +19,14 @@
 PromptHub transforms enterprise prompt engineering from an ad-hoc process into a systematic, collaborative discipline by applying proven software engineering practices to AI prompt management. The platform provides teams with GitHub-like version control, testing frameworks, and deployment pipelines specifically designed for enterprise AI workflows.
 
 ### Key Benefits
+
 - **75% reduction in AI output inconsistency** through structured testing and deployment workflows
 - **3x acceleration in prompt engineering productivity** via collaborative development and reusable templates
 - **Complete enterprise AI governance** through comprehensive audit trails and access controls
 - **30% cost optimization** across multiple LLM providers through intelligent routing and monitoring
 
 ### Target Users
+
 - **Prompt Engineers**: Develop reliable, consistent prompts for production systems
 - **AI Team Leads**: Manage team productivity and ensure quality standards
 - **DevOps Engineers**: Integrate AI workflows into existing CI/CD pipelines
@@ -32,30 +35,35 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 ## Features
 
 ### 🔄 Version Control & Collaboration
+
 - **Git-like Version Control**: SHA-based versioning with complete change history
 - **Real-time Collaborative Editing**: Multi-user editing with operational transform
 - **Branching & Merging**: Feature branches for safe experimental development
 - **Code Review Workflows**: Pull request system with approval processes
 
 ### 🧪 Testing & Validation
+
 - **Automated Testing Framework**: Run prompts against predefined test cases
 - **A/B Testing Platform**: Compare prompt performance with statistical analysis
 - **Bias Detection**: Automated analysis for fairness and safety issues
 - **Performance Monitoring**: Track latency, cost, and quality metrics
 
 ### 🚀 Deployment & Integration
+
 - **One-Click Deployment**: Zero-downtime deployments with rollback capabilities
 - **Multi-LLM Support**: Unified API for OpenAI, Anthropic, Azure OpenAI, and more
 - **Enterprise Integrations**: Slack, Teams, JIRA, and GitHub/GitLab
 - **Cost Optimization**: Intelligent provider routing based on cost and performance
 
 ### 🔒 Enterprise Security
+
 - **Role-Based Access Control**: Granular permissions with enterprise SSO
 - **Comprehensive Audit Logging**: Immutable trails for compliance
 - **Data Encryption**: AES-256 at rest, TLS 1.3 in transit
 - **SOC 2 Compliance**: Enterprise-grade security certifications
 
 ### 📊 Analytics & Optimization
+
 - **Performance Dashboards**: Real-time metrics and usage analytics
 - **Cost Tracking**: Detailed cost analysis across providers and teams
 - **Usage Analytics**: Team productivity and adoption metrics
@@ -64,6 +72,7 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 ## Architecture
 
 ### System Overview
+
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   React App     │    │   API Gateway   │    │  Microservices  │
@@ -80,6 +89,7 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 ```
 
 ### Microservices Architecture
+
 - **Auth Service**: Authentication, authorization, and user management
 - **Prompt Service**: Core prompt CRUD operations and version control
 - **Collaboration Service**: Real-time editing with WebSocket support
@@ -92,6 +102,7 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 ### Technology Stack
 
 #### Frontend
+
 - **React 18** with TypeScript
 - **Vite** for build tooling and development
 - **Tailwind CSS** for styling
@@ -101,6 +112,7 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 - **Socket.IO** for real-time collaboration
 
 #### Backend
+
 - **Python 3.11** with FastAPI
 - **PostgreSQL 15** for primary data storage
 - **Redis 7** for caching and session management
@@ -109,6 +121,7 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 - **Celery** for background task processing
 
 #### Infrastructure
+
 - **Docker** and **Kubernetes** for containerization
 - **AWS** cloud infrastructure
 - **Terraform** for infrastructure as code
@@ -118,18 +131,21 @@ PromptHub transforms enterprise prompt engineering from an ad-hoc process into a
 ## Quick Start
 
 ### Prerequisites
+
 - Docker and Docker Compose
 - Node.js 18+ and npm
 - Python 3.11+ and pip
 - Git
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/your-org/prompthub-enterprise.git
 cd prompthub-enterprise
 ```
 
 ### 2. Environment Setup
+
 ```bash
 # Copy environment template
 cp .env.example .env
@@ -139,18 +155,20 @@ nano .env
 ```
 
 ### 3. Start Development Environment
+
 ```bash
 # Start all services with Docker Compose
 docker-compose up -d
 
 # Install frontend dependencies
-cd frontend
+cd services/frontend
 npm install
+cd ../..
 
 # Install backend dependencies
-cd ../backend
-pip install -r requirements.txt
-poetry install --with dev,test
+pip install -r services/auth-service/requirements.txt
+pip install -r services/prompt-service/requirements.txt
+pip install -r services/collaboration-service/requirements.txt
 
 # Set up pre-commit hooks
 pre-commit install
@@ -163,11 +181,13 @@ python scripts/seed_data.py
 ```
 
 ### 4. Access the Application
+
 - **Frontend**: http://localhost:3000
 - **API Documentation**: http://localhost:8000/docs
 - **Admin Dashboard**: http://localhost:3000/admin
 
 ### 5. Create Your First Prompt
+
 1. Register a new account or use the demo credentials
 2. Navigate to the Dashboard
 3. Click "Create New Prompt"
@@ -179,27 +199,30 @@ python scripts/seed_data.py
 ### Local Development
 
 #### Backend Services
+
 ```bash
 # Start individual microservices
-cd services/auth && uvicorn main:app --reload --port 8001
-cd services/prompts && uvicorn main:app --reload --port 8002
-cd services/collaboration && uvicorn main:app --reload --port 8003
+cd services/auth-service && uvicorn main:app --reload --port 8001
+cd services/prompt-service && uvicorn main:app --reload --port 8002
+cd services/collaboration-service && uvicorn main:app --reload --port 8003
 
 # Or use the development script
 ./scripts/start-dev-services.sh
 ```
 
 #### Frontend Development
+
 ```bash
-cd frontend
+cd services/frontend
 npm run dev
 # Access at http://localhost:3000
 ```
 
 #### Database Operations
+
 ```bash
 # Create new migration
-cd backend
+cd services/auth-service
 alembic revision --autogenerate -m "Add new feature"
 
 # Apply migrations
@@ -215,6 +238,7 @@ pg_dump prompthub_dev > backups/dev_backup.sql
 ### Environment Variables
 
 #### Required Variables
+
 ```bash
 # Database
 DATABASE_URL=postgresql://user:password@localhost:5432/prompthub_dev
@@ -243,6 +267,7 @@ PROMETHEUS_ENDPOINT=http://prometheus:9090
 ```
 
 #### Optional Variables
+
 ```bash
 # Email Configuration
 SMTP_HOST=smtp.gmail.com
@@ -265,6 +290,7 @@ MIXPANEL_TOKEN=your-mixpanel-token
 ### Authentication
 
 #### Register User
+
 ```http
 POST /api/v1/auth/register
 Content-Type: application/json
@@ -278,6 +304,7 @@ Content-Type: application/json
 ```
 
 #### Login
+
 ```http
 POST /api/v1/auth/login
 Content-Type: application/json
@@ -289,6 +316,7 @@ Content-Type: application/json
 ```
 
 #### Response
+
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -306,6 +334,7 @@ Content-Type: application/json
 ### Prompt Management
 
 #### Create Prompt
+
 ```http
 POST /api/v1/prompts
 Authorization: Bearer {token}
@@ -324,12 +353,14 @@ Content-Type: application/json
 ```
 
 #### Get Prompt
+
 ```http
 GET /api/v1/prompts/{prompt_id}
 Authorization: Bearer {token}
 ```
 
 #### Update Prompt
+
 ```http
 PUT /api/v1/prompts/{prompt_id}
 Authorization: Bearer {token}
@@ -342,6 +373,7 @@ Content-Type: application/json
 ```
 
 #### List Prompts
+
 ```http
 GET /api/v1/prompts?page=1&limit=20&search=customer&tags=assistant
 Authorization: Bearer {token}
@@ -350,12 +382,14 @@ Authorization: Bearer {token}
 ### Version Control
 
 #### Get Version History
+
 ```http
 GET /api/v1/prompts/{prompt_id}/versions
 Authorization: Bearer {token}
 ```
 
 #### Create Branch
+
 ```http
 POST /api/v1/prompts/{prompt_id}/branches
 Authorization: Bearer {token}
@@ -368,6 +402,7 @@ Content-Type: application/json
 ```
 
 #### Compare Versions
+
 ```http
 GET /api/v1/prompts/{prompt_id}/compare/{version_a}...{version_b}
 Authorization: Bearer {token}
@@ -376,6 +411,7 @@ Authorization: Bearer {token}
 ### Prompt Execution
 
 #### Execute Prompt
+
 ```http
 POST /api/v1/execute
 Authorization: Bearer {token}
@@ -394,6 +430,7 @@ Content-Type: application/json
 ```
 
 #### Response
+
 ```json
 {
   "result": {
@@ -414,6 +451,7 @@ Content-Type: application/json
 ### Testing
 
 #### Create Test Case
+
 ```http
 POST /api/v1/prompts/{prompt_id}/tests
 Authorization: Bearer {token}
@@ -438,6 +476,7 @@ Content-Type: application/json
 ```
 
 #### Run Tests
+
 ```http
 POST /api/v1/prompts/{prompt_id}/test-runs
 Authorization: Bearer {token}
@@ -453,6 +492,7 @@ Content-Type: application/json
 ### A/B Testing
 
 #### Create A/B Test
+
 ```http
 POST /api/v1/experiments
 Authorization: Bearer {token}
@@ -483,10 +523,11 @@ Content-Type: application/json
 ### Running Tests
 
 #### Backend Tests
+
 ```bash
 # Unit tests
-pytest services/auth/tests/ -v --cov=services/auth
-pytest services/prompts/tests/ -v --cov=services/prompts
+pytest services/auth-service/tests/ -v --cov=services/auth-service
+pytest services/prompt-service/tests/ -v --cov=services/prompt-service
 
 # Integration tests
 pytest tests/integration/ -v
@@ -499,8 +540,9 @@ pytest tests/performance/ -v --benchmark-only
 ```
 
 #### Frontend Tests
+
 ```bash
-cd frontend
+cd services/frontend
 
 # Unit tests
 npm test
@@ -521,21 +563,25 @@ npm run test:coverage
 ### Test Categories
 
 #### Unit Tests
+
 - **Coverage Requirement**: >85% for critical business logic
 - **Focus Areas**: Business logic, utilities, pure functions
 - **Mocking**: External dependencies, database calls, API requests
 
 #### Integration Tests
+
 - **API Testing**: All endpoints with realistic data
 - **Database Testing**: CRUD operations, transactions, constraints
 - **Service Integration**: Inter-service communication patterns
 
 #### End-to-End Tests
+
 - **User Workflows**: Complete user journeys from login to deployment
 - **Cross-browser**: Chrome, Firefox, Safari compatibility
 - **Mobile Responsive**: Touch interactions and responsive layouts
 
 #### Performance Tests
+
 - **Load Testing**: 1,000+ concurrent users
 - **Stress Testing**: System breaking points
 - **API Performance**: <200ms P95 response times
@@ -544,6 +590,7 @@ npm run test:coverage
 ### Test Data Management
 
 #### Fixtures
+
 ```python
 # pytest fixtures for consistent test data
 @pytest.fixture
@@ -564,6 +611,7 @@ def sample_prompt():
 ```
 
 #### Test Database
+
 ```bash
 # Create test database
 createdb prompthub_test
@@ -580,6 +628,7 @@ ENVIRONMENT=test python scripts/seed_test_data.py
 ### Production Deployment
 
 #### Prerequisites
+
 - Kubernetes cluster (AWS EKS recommended)
 - PostgreSQL database (RDS)
 - Redis cluster (ElastiCache)
@@ -587,6 +636,7 @@ ENVIRONMENT=test python scripts/seed_test_data.py
 - Domain name and SSL certificate
 
 #### Build and Push Images
+
 ```bash
 # Build all service images
 ./scripts/build-images.sh
@@ -601,6 +651,7 @@ docker push your-registry/prompthub-prompts:v1.0.0
 ```
 
 #### Deploy to Kubernetes
+
 ```bash
 # Apply configurations
 kubectl apply -f k8s/namespace.yaml
@@ -616,6 +667,7 @@ kubectl get services -n prompthub
 ```
 
 #### Database Migration
+
 ```bash
 # Run migrations in production
 kubectl exec -it deployment/prompthub-auth -n prompthub -- alembic upgrade head
@@ -624,6 +676,7 @@ kubectl exec -it deployment/prompthub-auth -n prompthub -- alembic upgrade head
 ### Blue-Green Deployment
 
 #### Setup
+
 ```bash
 # Deploy to green environment
 kubectl apply -f k8s/deployments/green/
@@ -644,6 +697,7 @@ kubectl delete -f k8s/deployments/blue/
 ### Environment Configurations
 
 #### Staging Environment
+
 ```yaml
 # k8s/deployments/staging.yaml
 apiVersion: apps/v1
@@ -663,19 +717,20 @@ spec:
         env: staging
     spec:
       containers:
-      - name: auth
-        image: your-registry/prompthub-auth:staging
-        env:
-        - name: ENVIRONMENT
-          value: "staging"
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: db-credentials
-              key: staging-url
+        - name: auth
+          image: your-registry/prompthub-auth:staging
+          env:
+            - name: ENVIRONMENT
+              value: 'staging'
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: staging-url
 ```
 
 #### Production Environment
+
 ```yaml
 # k8s/deployments/production.yaml
 apiVersion: apps/v1
@@ -695,23 +750,24 @@ spec:
         env: production
     spec:
       containers:
-      - name: auth
-        image: your-registry/prompthub-auth:v1.0.0
-        env:
-        - name: ENVIRONMENT
-          value: "production"
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "200m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        - name: auth
+          image: your-registry/prompthub-auth:v1.0.0
+          env:
+            - name: ENVIRONMENT
+              value: 'production'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '200m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
 ```
 
 ### Monitoring and Logging
 
 #### Prometheus Configuration
+
 ```yaml
 # monitoring/prometheus.yml
 global:
@@ -720,14 +776,15 @@ global:
 scrape_configs:
   - job_name: 'prompthub-services'
     kubernetes_sd_configs:
-    - role: pod
+      - role: pod
     relabel_configs:
-    - source_labels: [__meta_kubernetes_pod_label_app]
-      action: keep
-      regex: prompthub.*
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: prompthub.*
 ```
 
 #### Grafana Dashboards
+
 - **System Metrics**: CPU, memory, disk usage
 - **Application Metrics**: Request rates, error rates, latency
 - **Business Metrics**: Prompt executions, user activity, costs
@@ -738,6 +795,7 @@ scrape_configs:
 ### Authentication & Authorization
 
 #### JWT Configuration
+
 ```python
 # Security settings
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
@@ -750,6 +808,7 @@ PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ```
 
 #### Role-Based Access Control
+
 ```python
 # Permission matrix
 PERMISSIONS = {
@@ -771,6 +830,7 @@ PERMISSIONS = {
 ### Data Encryption
 
 #### At Rest
+
 ```python
 # Database encryption
 from cryptography.fernet import Fernet
@@ -787,6 +847,7 @@ def decrypt_sensitive_data(encrypted_data: str) -> str:
 ```
 
 #### In Transit
+
 ```nginx
 # NGINX SSL configuration
 server {
@@ -802,6 +863,7 @@ server {
 ```
 
 ### Security Headers
+
 ```python
 # FastAPI middleware
 from fastapi.middleware.cors import CORSMiddleware
@@ -822,6 +884,7 @@ app.add_middleware(
 ```
 
 ### Audit Logging
+
 ```python
 # Audit logger
 import logging
@@ -847,6 +910,7 @@ def log_audit_event(
 ### Vulnerability Management
 
 #### Security Scanning
+
 ```yaml
 # .github/workflows/security.yml
 name: Security Scan
@@ -856,25 +920,26 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Run Snyk
-      uses: snyk/actions/python@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Run Snyk
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-    - name: Run Bandit
-      run: |
-        pip install bandit
-        bandit -r . -f json -o bandit-report.json
+      - name: Run Bandit
+        run: |
+          pip install bandit
+          bandit -r . -f json -o bandit-report.json
 
-    - name: Run Safety
-      run: |
-        pip install safety
-        safety check --json --output safety-report.json
+      - name: Run Safety
+        run: |
+          pip install safety
+          safety check --json --output safety-report.json
 ```
 
 #### Penetration Testing
+
 - **Frequency**: Quarterly external penetration tests
 - **Scope**: Web application, API endpoints, infrastructure
 - **Tools**: OWASP ZAP, Burp Suite, custom security tests
@@ -885,6 +950,7 @@ jobs:
 ### Development Workflow
 
 #### Setting Up Development Environment
+
 ```bash
 # Fork the repository
 git clone https://github.com/your-username/prompthub-enterprise.git
@@ -904,6 +970,7 @@ pre-commit install
 #### Code Standards
 
 #### Python Code Style
+
 ```python
 # Use Black for formatting
 black --line-length 88 services/
@@ -919,12 +986,13 @@ mypy services/
 ```
 
 #### TypeScript Code Style
+
 ```bash
 # Use Prettier for formatting
-npx prettier --write frontend/src/
+npx prettier --write services/frontend/src/
 
 # Use ESLint for linting
-npx eslint frontend/src/ --fix
+npx eslint services/frontend/src/ --fix
 
 # Type checking
 npx tsc --noEmit
@@ -933,6 +1001,7 @@ npx tsc --noEmit
 ### Pull Request Process
 
 #### Before Submitting
+
 1. **Run Tests**: Ensure all tests pass locally
 2. **Code Review**: Self-review your changes
 3. **Documentation**: Update relevant documentation
@@ -940,6 +1009,7 @@ npx tsc --noEmit
 5. **Commit Messages**: Follow conventional commit format
 
 #### Commit Message Format
+
 ```
 type(scope): description
 
@@ -949,6 +1019,7 @@ type(scope): description
 ```
 
 Examples:
+
 ```
 feat(auth): add SSO integration with SAML 2.0
 fix(prompts): resolve version comparison edge case
@@ -957,22 +1028,27 @@ test(collaboration): add real-time editing tests
 ```
 
 #### Pull Request Template
+
 ```markdown
 ## Description
+
 Brief description of the changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests pass
 - [ ] Integration tests pass
 - [ ] Manual testing completed
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -982,12 +1058,14 @@ Brief description of the changes
 ### Code Review Guidelines
 
 #### For Authors
+
 - **Small PRs**: Keep changes focused and reviewable
 - **Clear Description**: Explain what and why, not just how
 - **Test Coverage**: Include tests for new functionality
 - **Documentation**: Update relevant docs and comments
 
 #### For Reviewers
+
 - **Timely Reviews**: Respond within 24 hours
 - **Constructive Feedback**: Suggest improvements, don't just criticize
 - **Security Focus**: Look for potential security issues
@@ -996,11 +1074,13 @@ Brief description of the changes
 ### Issue Reporting
 
 #### Bug Reports
+
 ```markdown
 **Bug Description**
 A clear description of the bug
 
 **Steps to Reproduce**
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -1013,12 +1093,14 @@ What you expected to happen
 If applicable, add screenshots
 
 **Environment**
+
 - OS: [e.g. iOS]
 - Browser: [e.g. chrome, safari]
 - Version: [e.g. 22]
 ```
 
 #### Feature Requests
+
 ```markdown
 **Feature Description**
 A clear description of the feature
@@ -1041,6 +1123,7 @@ Any other context or screenshots
 ### Database Optimization
 
 #### Query Optimization
+
 ```sql
 -- Example optimized query with proper indexing
 EXPLAIN ANALYZE
@@ -1063,6 +1146,7 @@ WHERE deleted_at IS NULL;
 ```
 
 #### Connection Pooling
+
 ```python
 # Database connection pool configuration
 from sqlalchemy.pool import QueuePool
@@ -1080,6 +1164,7 @@ engine = create_engine(
 ### Caching Strategies
 
 #### Redis Caching
+
 ```python
 # Cache configuration
 CACHE_SETTINGS = {
@@ -1107,6 +1192,7 @@ async def set_cached_prompt(prompt_id: str, data: dict):
 ### Frontend Optimization
 
 #### Code Splitting
+
 ```typescript
 // Route-based code splitting
 import { lazy, Suspense } from 'react';
@@ -1131,6 +1217,7 @@ function App() {
 ```
 
 #### Bundle Optimization
+
 ```javascript
 // webpack.config.js
 module.exports = {
@@ -1147,10 +1234,10 @@ module.exports = {
           test: /[\\/]node_modules[\\/]monaco-editor[\\/]/,
           name: 'monaco',
           chunks: 'all',
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 ```
 
@@ -1159,6 +1246,7 @@ module.exports = {
 ### Common Issues
 
 #### Database Connection Issues
+
 ```bash
 # Check database connectivity
 pg_isready -h localhost -p 5432
@@ -1173,18 +1261,20 @@ systemctl restart pgbouncer
 ```
 
 #### WebSocket Connection Problems
+
 ```javascript
 // WebSocket debugging
 const ws = new WebSocket('ws://localhost:8000/ws');
 ws.onopen = () => console.log('Connected');
-ws.onerror = (error) => console.error('WebSocket error:', error);
-ws.onclose = (event) => console.log('Disconnected:', event.code, event.reason);
+ws.onerror = error => console.error('WebSocket error:', error);
+ws.onclose = event => console.log('Disconnected:', event.code, event.reason);
 
 // Check CORS configuration
 // Ensure WebSocket endpoint allows your origin
 ```
 
 #### Performance Issues
+
 ```bash
 # Monitor system resources
 htop
@@ -1202,6 +1292,7 @@ LIMIT 10;
 ```
 
 #### LLM Provider API Issues
+
 ```python
 # Provider health check
 async def check_provider_health():
@@ -1228,13 +1319,14 @@ async def check_provider_health():
 ```
 
 #### Memory Leaks
+
 ```bash
 # Monitor memory usage
 ps aux | grep python | awk '{print $6/1024 " MB\t" $11}'
 
 # Profile memory usage
 pip install memory-profiler
-python -m memory_profiler services/prompts/main.py
+python -m memory_profiler services/prompt-service/main.py
 
 # Check for WebSocket connection leaks
 netstat -an | grep :8000 | wc -l
@@ -1243,6 +1335,7 @@ netstat -an | grep :8000 | wc -l
 ### Debugging Tools
 
 #### Application Debugging
+
 ```python
 # Debug logging configuration
 import logging
@@ -1269,6 +1362,7 @@ async def add_trace_id(request: Request, call_next):
 ```
 
 #### Database Debugging
+
 ```sql
 -- Enable query logging
 ALTER SYSTEM SET log_statement = 'all';
@@ -1298,6 +1392,7 @@ ORDER BY total_size DESC;
 ### Performance Monitoring
 
 #### Application Performance Monitoring
+
 ```python
 # Custom metrics collection
 from prometheus_client import Counter, Histogram, Gauge
@@ -1316,6 +1411,7 @@ async def metrics_middleware(request: Request, call_next):
 ```
 
 #### Health Check Endpoints
+
 ```python
 @app.get("/health")
 async def health_check():
@@ -1355,6 +1451,7 @@ async def readiness_check():
 ### Database Backup Strategy
 
 #### Automated Backups
+
 ```bash
 #!/bin/bash
 # backup-database.sh
@@ -1382,6 +1479,7 @@ echo "Backup completed: prompthub_full_$DATE.backup"
 ```
 
 #### Point-in-Time Recovery
+
 ```bash
 # Enable WAL archiving in postgresql.conf
 wal_level = replica
@@ -1406,6 +1504,7 @@ pg_ctl start -D /var/lib/postgresql/data
 ### Application Data Backup
 
 #### File Storage Backup
+
 ```bash
 #!/bin/bash
 # backup-files.sh
@@ -1420,6 +1519,7 @@ aws s3 cp /tmp/config_backup.tar.gz s3://prompthub-backups/config/
 ```
 
 #### Redis Backup
+
 ```bash
 # Create Redis snapshot
 redis-cli BGSAVE
@@ -1439,16 +1539,19 @@ aws s3 cp /backup/redis/dump_$(date +%Y%m%d_%H%M%S).rdb s3://prompthub-backups/r
 ### Disaster Recovery Plan
 
 #### Recovery Time Objectives (RTO)
+
 - **Critical Services**: 4 hours
 - **Non-critical Services**: 24 hours
 - **Full System Recovery**: 48 hours
 
 #### Recovery Point Objectives (RPO)
+
 - **Database**: 15 minutes (using WAL streaming)
 - **File Storage**: 1 hour (using S3 cross-region replication)
 - **Configuration**: 24 hours (daily backups)
 
 #### Recovery Procedures
+
 ```bash
 # 1. Assess damage and activate disaster recovery team
 # 2. Deploy infrastructure from Terraform templates
@@ -1475,6 +1578,7 @@ kubectl apply -f k8s/disaster-recovery/
 ### Horizontal Scaling
 
 #### Application Services
+
 ```yaml
 # k8s/hpa.yaml - Horizontal Pod Autoscaler
 apiVersion: autoscaling/v2
@@ -1489,21 +1593,22 @@ spec:
   minReplicas: 3
   maxReplicas: 20
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
 ```
 
 #### Database Scaling
+
 ```yaml
 # PostgreSQL read replicas
 apiVersion: postgresql.cnpg.io/v1
@@ -1515,22 +1620,23 @@ spec:
 
   postgresql:
     parameters:
-      max_connections: "200"
-      shared_buffers: "256MB"
-      effective_cache_size: "1GB"
+      max_connections: '200'
+      shared_buffers: '256MB'
+      effective_cache_size: '1GB'
 
   monitoring:
     enabled: true
 
   backup:
-    retentionPolicy: "30d"
+    retentionPolicy: '30d'
     barmanObjectStore:
-      destinationPath: "s3://prompthub-pg-backup"
+      destinationPath: 's3://prompthub-pg-backup'
 ```
 
 ### Vertical Scaling
 
 #### Resource Optimization
+
 ```yaml
 # Optimized resource requests and limits
 resources:
@@ -1554,6 +1660,7 @@ resources:
 ### Load Balancing
 
 #### NGINX Configuration
+
 ```nginx
 upstream prompthub_backend {
     least_conn;
@@ -1593,6 +1700,7 @@ server {
 ### Caching Strategies
 
 #### Multi-Level Caching
+
 ```python
 # L1: Application-level caching
 from functools import lru_cache
@@ -1622,6 +1730,7 @@ async def get_prompt_with_cache(prompt_id: str) -> dict:
 ## API Rate Limiting
 
 ### Implementation
+
 ```python
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -1644,6 +1753,7 @@ async def login(request: Request, ...):
 ```
 
 ### Advanced Rate Limiting
+
 ```python
 # User-based rate limiting
 from slowapi.util import get_remote_address
@@ -1708,18 +1818,21 @@ SOFTWARE.
 ### Getting Help
 
 #### Documentation
+
 - **API Documentation**: https://docs.prompthub.example.com
 - **User Guide**: https://docs.prompthub.example.com/guide
 - **Developer Documentation**: https://docs.prompthub.example.com/dev
 - **Video Tutorials**: https://www.youtube.com/prompthub
 
 #### Community Resources
+
 - **GitHub Discussions**: https://github.com/your-org/prompthub-enterprise/discussions
 - **Discord Server**: https://discord.gg/prompthub
 - **Stack Overflow**: Tag questions with `prompthub`
 - **Reddit Community**: r/prompthub
 
 #### Professional Support
+
 - **Enterprise Support**: support@prompthub.example.com
 - **Security Issues**: security@prompthub.example.com
 - **Sales Inquiries**: sales@prompthub.example.com
@@ -1728,6 +1841,7 @@ SOFTWARE.
 ### Contributing to the Community
 
 #### Ways to Contribute
+
 - **Code Contributions**: Submit pull requests for bug fixes and features
 - **Documentation**: Help improve documentation and tutorials
 - **Bug Reports**: Report issues and help with debugging
@@ -1735,6 +1849,7 @@ SOFTWARE.
 - **Community Support**: Help other users in discussions and forums
 
 #### Recognition
+
 - **Contributor Hall of Fame**: Top contributors featured on website
 - **Exclusive Access**: Early access to new features and beta programs
 - **Swag Program**: PromptHub merchandise for active contributors
@@ -1743,6 +1858,7 @@ SOFTWARE.
 ### Roadmap
 
 #### Upcoming Features (Q3-Q4 2025)
+
 - **Advanced AI Safety**: Enhanced bias detection and content filtering
 - **Multi-language Support**: Internationalization for global teams
 - **Advanced Analytics**: ML-powered insights and optimization recommendations
@@ -1750,6 +1866,7 @@ SOFTWARE.
 - **Enterprise Integrations**: Salesforce, ServiceNow, and custom enterprise tools
 
 #### Long-term Vision (2026+)
+
 - **AI-Powered Prompt Generation**: Automated prompt creation and optimization
 - **Federated Learning**: Privacy-preserving model improvement across organizations
 - **Advanced Governance**: Compliance automation and regulatory reporting
@@ -1760,9 +1877,10 @@ SOFTWARE.
 ## Quick Reference
 
 ### Essential Commands
+
 ```bash
 # Development
-npm run dev                 # Start frontend development server
+npm run dev                 # Build and start all services with Docker Compose
 docker-compose up          # Start all services
 pytest                     # Run backend tests
 npm test                   # Run frontend tests
@@ -1781,6 +1899,7 @@ redis-cli FLUSHDB         # Clear Redis cache
 ```
 
 ### Environment Variables Checklist
+
 - [ ] `DATABASE_URL` - PostgreSQL connection string
 - [ ] `REDIS_URL` - Redis connection string
 - [ ] `JWT_SECRET_KEY` - JWT signing secret
@@ -1792,6 +1911,7 @@ redis-cli FLUSHDB         # Clear Redis cache
 - [ ] `ENCRYPTION_KEY` - Data encryption
 
 ### Performance Targets
+
 - **API Response Time**: P95 < 200ms
 - **WebSocket Latency**: < 500ms
 - **Database Queries**: P95 < 50ms
@@ -1800,6 +1920,7 @@ redis-cli FLUSHDB         # Clear Redis cache
 - **Test Coverage**: > 85%
 
 ### Security Checklist
+
 - [ ] HTTPS enabled with valid SSL certificate
 - [ ] JWT tokens have reasonable expiration times
 - [ ] Database credentials are properly secured
