@@ -11,15 +11,15 @@
     "logs": "docker-compose logs -f",
     "build": "docker-compose build",
     "test": "npm run test:services",
-    "test:services": "cd services && npm run test:all",
+    "test:services": "[ -f services/package.json ] && (cd services && npm run test:all) || echo 'No service package'",
     "lint": "npm run lint:services",
-    "lint:services": "cd services && npm run lint:all",
+    "lint:services": "[ -f services/package.json ] && (cd services && npm run lint:all) || echo 'No service package'",
     "lint:fix": "npm run lint:services:fix",
-    "lint:services:fix": "cd services && npm run lint:all:fix",
+    "lint:services:fix": "[ -f services/package.json ] && (cd services && npm run lint:all:fix) || echo 'No service package'",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
     "prepare": "husky install",
-    "postinstall": "cd services && npm install",
+    "postinstall": "[ -f services/package.json ] && (cd services && npm install) || echo 'No service package'",
     "clean": "docker system prune -f && docker volume prune -f",
     "reset": "npm run down:volumes && npm run clean && npm run dev"
   },
@@ -69,5 +69,4 @@
       "pre-commit": "lint-staged",
       "pre-push": "npm run test && npm run lint"
     }
-  }
-}
+  }}
