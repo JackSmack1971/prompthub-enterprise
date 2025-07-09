@@ -52,6 +52,8 @@ services:
     build:
       context: ./services/auth-service
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env
     ports:
       - "3001:3001"
     volumes:
@@ -59,9 +61,9 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://prompthub:password@postgres:5432/prompthub_auth
-      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${AUTH_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - postgres
       - redis
@@ -78,6 +80,8 @@ services:
     build:
       context: ./services/prompt-service
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env
     ports:
       - "3002:3002"
     volumes:
@@ -85,8 +89,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://prompthub:password@postgres:5432/prompthub_prompts
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${PROMPT_DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - postgres
       - redis
@@ -103,6 +107,8 @@ services:
     build:
       context: ./services/llm-service
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env
     ports:
       - "3003:3003"
     volumes:
@@ -110,8 +116,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://prompthub:password@postgres:5432/prompthub_llm
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${LLM_DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     depends_on:
@@ -130,6 +136,8 @@ services:
     build:
       context: ./services/collaboration-service
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env
     ports:
       - "3004:3004"
     volumes:
@@ -137,8 +145,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://prompthub:password@postgres:5432/prompthub_collaboration
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${COLLABORATION_DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - postgres
       - redis
@@ -155,6 +163,8 @@ services:
     build:
       context: ./services/testing-service
       dockerfile: Dockerfile.dev
+    env_file:
+      - .env
     ports:
       - "3005:3005"
     volumes:
@@ -162,8 +172,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://prompthub:password@postgres:5432/prompthub_testing
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${TESTING_DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - postgres
       - redis
@@ -178,12 +188,14 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=prompthub
-      - POSTGRES_USER=prompthub
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
