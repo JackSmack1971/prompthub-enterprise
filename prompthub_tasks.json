@@ -707,4 +707,7 @@
       "TASK-018"
     ],
     "parallel_groups": [
-      ["TASK-008", "TASK-007", "TASK-019", "TASK-024"],
+      ["TASK-008", "TASK-007", "TASK-019", "TASK-024"]
+    ]
+  }
+}
