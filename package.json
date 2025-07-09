@@ -1,0 +1,73 @@
+{
+  "name": "prompthub-enterprise",
+  "version": "1.0.0",
+  "description": "Enterprise-grade prompt management and collaboration platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docker-compose up --build",
+    "dev:detached": "docker-compose up -d --build",
+    "down": "docker-compose down",
+    "down:volumes": "docker-compose down -v",
+    "logs": "docker-compose logs -f",
+    "build": "docker-compose build",
+    "test": "npm run test:services",
+    "test:services": "cd services && npm run test:all",
+    "lint": "npm run lint:services",
+    "lint:services": "cd services && npm run lint:all",
+    "lint:fix": "npm run lint:services:fix",
+    "lint:services:fix": "cd services && npm run lint:all:fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
+    "prepare": "husky install",
+    "postinstall": "cd services && npm install",
+    "clean": "docker system prune -f && docker volume prune -f",
+    "reset": "npm run down:volumes && npm run clean && npm run dev"
+  },
+  "keywords": [
+    "prompt-engineering",
+    "llm",
+    "ai",
+    "collaboration",
+    "enterprise",
+    "microservices"
+  ],
+  "author": "PromptHub Enterprise Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test && npm run lint"
+    }
+  }
+}
