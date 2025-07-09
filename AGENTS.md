@@ -1,4 +1,6 @@
 # PromptHub Enterprise Platform - AI Agent Guide
+ATTENTION CODEX AGENT!!:
+** ALL REQUIRED TASKS ARE CLEARLY LAID OUT IN prompthub_tasks.json LOCATED IN THE PROJECT ROOT FOLDER **
 
 ## Project Overview
 
