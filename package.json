@@ -10,8 +10,8 @@
     "down:volumes": "docker-compose down -v",
     "logs": "docker-compose logs -f",
     "build": "docker-compose build",
-    "test": "npm run test:services",
-    "test:services": "[ -f services/package.json ] && (cd services && npm run test:all) || echo 'No service package'",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "lint": "npm run lint:services",
     "lint:services": "[ -f services/package.json ] && (cd services && npm run lint:all) || echo 'No service package'",
     "lint:fix": "npm run lint:services:fix",
@@ -45,7 +45,8 @@
     "husky": "^8.0.0",
     "lint-staged": "^14.0.0",
     "prettier": "^3.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0"
   },
   "dependencies": {
     "concurrently": "^8.2.0",
